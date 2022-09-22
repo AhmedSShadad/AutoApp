@@ -40,7 +40,7 @@ jobs:
       - run: flutter build apk --debug --split-per-abi
       
       - run: |
-          flutter build ios
+          flutter build ipa
           cd build/ios/iphoneos
           mkdir Payload
           cd Payload
