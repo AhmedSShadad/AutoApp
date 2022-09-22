@@ -44,5 +44,8 @@ jobs:
 
       - name: Create Github Release
         uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/bundle/release/*.aab"
+          token: ${{ secrets.RELEASES_TOKEN }}
         
 
