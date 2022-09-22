@@ -37,15 +37,21 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
-        
-      - name: Build APPBUNDLE
-        run: flutter build appbundle --release
-
-      - name: Create Github Release
+      - name: Build APK
+      - run: flutter build apk --debug --split-per-abi   
+      
+      - run: |
+          flutter build ios --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          cd Payload
+          ln -s ../Runner.app
+          cd ..
+          zip -r app.ipa Payload
+      - name: Push to Releases
         uses: ncipollo/release-action@v1
-       
         with:
-          artifacts: "build/app/outputs/bundle/release/*.aab"
+          artifacts: "build/app/outputs/apk/debug/*,build/ios/iphoneos/app.ipa"
           tag: v1.0.5
           token: ${{ secrets.TOKEN }}
         
