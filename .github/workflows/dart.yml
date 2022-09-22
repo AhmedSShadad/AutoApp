@@ -31,7 +31,13 @@ jobs:
         with:
           fetch-depth: 0
           java-version: "18.x"
-     
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "3.3.2"
+
+      - name: Install dependencies
+        run: flutter pub get
         
       - name: Build APPBUNDLE
         run: flutter build appbundle --release
