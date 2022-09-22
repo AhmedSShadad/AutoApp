@@ -46,6 +46,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/bundle/release/*.aab"
-          token: ${{ secrets.RELEASES_TOKEN }}
+          token: ${{ secrets.TOKEN }}
         
 
