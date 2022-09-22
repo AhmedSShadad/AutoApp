@@ -34,7 +34,10 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
-      - name: Build APK
-      - run: flutter build apk
-    
+        
+      - name: Build APPBUNDLE
+        run: flutter build appbundle --release
+
+      - name: Create Github Release
+        uses: ncipollo/release-action@v1
 
