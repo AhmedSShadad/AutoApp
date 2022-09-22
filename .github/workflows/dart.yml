@@ -37,8 +37,7 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
-      - name: Build APK
-      - run: flutter build apk --debug --split-per-abi   
+      - run: flutter build apk --debug --split-per-abi
       
       - run: |
           flutter build ios --no-codesign
@@ -52,7 +51,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/apk/debug/*,build/ios/iphoneos/app.ipa"
-          tag: v1.0.5
+          tag: v1.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
         
 
