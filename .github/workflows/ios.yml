@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
+
 
 name: Dart 
 
@@ -106,4 +102,4 @@ jobs:
 
         
   
->>>>>>> 3120f38ee266f4dea91c5e4cfb54798ea88a32eb
+
