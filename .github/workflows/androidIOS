@@ -43,7 +43,7 @@ jobs:
           artifacts: "build/app/outputs/apk/debug/*,build/ios/iphoneos/iosApp.ipa"
           tag: v1.4.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
-
+ 
   job2:
     build:
       runs-on: macos-latest
