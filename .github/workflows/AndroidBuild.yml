@@ -38,7 +38,7 @@ jobs:
         run: flutter build appbundle --release
       
       - name: Push to Releases
-        uses: ncipollo/release-action@v3
+        uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/apk/debug/*"
           tag: v3.0.${{ github.run_number }}
