@@ -36,9 +36,8 @@ jobs:
       - run: flutter build apk --debug --split-per-abi
       - name: Build APPBUNDLE
         run: flutter build appbundle --release
-  build:
-    runs-on: macos-latest    
-        - run: |
+
+      - run: |
           flutter build ios --no-codesign
           cd build/ios/iphoneos
           mkdir Payload
