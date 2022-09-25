@@ -39,10 +39,10 @@ jobs:
         run: flutter build appbundle --release
 
   job2:
-      build:
-        runs-on: macos-latest
+    build:
+     runs-on: macos-latest
 
-      steps:
+    steps:
         - uses: actions/checkout@v3
           with:
           fetch-depth: 0
@@ -67,8 +67,9 @@ jobs:
             ln -s ../Runner.app
             cd ..
             zip -r iosApp.ipa Payload
-
-      - name: Push to Releases
+  job3:
+   needs: [job1, job2]
+    - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/apk/debug/*,build/ios/iphoneos/iosApp.ipa"
