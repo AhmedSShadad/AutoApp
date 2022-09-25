@@ -1,0 +1,77 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Dart
+
+on:
+  push:
+    tags:
+    - 'v*'
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  job1:
+    build:
+     runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: "18.x"
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "3.3.2"
+
+      - name: Install dependencies
+        run: flutter pub get
+      - run: flutter build apk --debug --split-per-abi
+      - name: Build APPBUNDLE
+        run: flutter build appbundle --release
+
+    job2:
+      build:
+        runs-on: macos-latest
+
+      steps:
+        - uses: actions/checkout@v3
+          with:
+          fetch-depth: 0
+          
+        - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+        - name: Setup Java
+          uses: actions/setup-java@v1
+          with:
+          java-version: "18.x"
+        - name: Setup Flutter
+          uses: subosito/flutter-action@v2
+          with:
+          flutter-version: '3.3.2'
+          
+        - name: Install dependencies
+          run: flutter pub get
+        - run: |
+            flutter build ios --no-codesign
+            cd build/ios/iphoneos
+            mkdir Payload
+            cd Payload
+            ln -s ../Runner.app
+            cd ..
+            zip -r iosApp.ipa Payload
+
+      - name: Push to Releases
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/apk/debug/*,build/ios/iphoneos/iosApp.ipa"
+          tag: v1.0.${{ github.run_number }}
+          token: ${{ secrets.TOKEN }}
+        
