@@ -14,6 +14,7 @@ on:
     branches: [ "main" ]
 
 jobs:
+  job1:
   build:
     runs-on: ubuntu-latest
 
@@ -44,73 +45,33 @@ jobs:
           tag: v1.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
         
-build:
-    runs-on: macos-latest
+  job2:
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
       - name: Setup Java
         uses: actions/setup-java@v1
         with:
           java-version: "18.x"
       - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@v1
         with:
-          flutter-version: '3.3.2'
-          
+          flutter-version: "3.3.2"
+
       - name: Install dependencies
         run: flutter pub get
-      - run: |
-          flutter build ios --no-codesign
-          cd build/ios/iphoneos
-          mkdir Payload
-          cd Payload
-          ln -s ../Runner.app
-          cd ..
-          zip -r app.ipa Payload
+      - run: flutter build apk --debug --split-per-abi
+      - name: Build APPBUNDLE
+        run: flutter build appbundle --release
+      
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/ios/iphoneos/app.ipa"
-          tag: v1.1.${{ github.run_number }}
+          artifacts: "build/app/outputs/apk/debug/*"
+          tag: v1.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
-
-        
-  build:
-    runs-on: macos-latest
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
-      - name: Setup Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: "18.x"
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.3.2'
-          
-      - name: Install dependencies
-        run: flutter pub get
-      - run: |
-          flutter build ios --no-codesign
-          cd build/ios/iphoneos
-          mkdir Payload
-          cd Payload
-          ln -s ../Runner.app
-          cd ..
-          zip -r app.ipa Payload
-      - name: Push to Releases
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/ios/iphoneos/app.ipa"
-          tag: v1.1.${{ github.run_number }}
-          token: ${{ secrets.TOKEN }}
+    
