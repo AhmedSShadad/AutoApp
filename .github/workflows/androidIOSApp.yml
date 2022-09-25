@@ -15,6 +15,7 @@ on:
 
 jobs:
   job1:
+  - name:  build android
     build:
      runs-on: ubuntu-latest
 
@@ -39,6 +40,7 @@ jobs:
         run: flutter build appbundle --release
 
   job2:
+  - name:  build IOS
     build:
      runs-on: macos-latest
 
@@ -67,12 +69,4 @@ jobs:
             ln -s ../Runner.app
             cd ..
             zip -r iosApp.ipa Payload
-  job3:
-   needs: [job1, job2]
-    - name: Push to Releases
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/apk/debug/*,build/ios/iphoneos/iosApp.ipa"
-          tag: v1.0.${{ github.run_number }}
-          token: ${{ secrets.TOKEN }}
-        
+      
