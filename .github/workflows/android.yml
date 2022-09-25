@@ -36,11 +36,21 @@ jobs:
       - run: flutter build apk --debug --split-per-abi
       - name: Build APPBUNDLE
         run: flutter build appbundle --release
-      
+  build:
+    runs-on: macos-latest    
+        - run: |
+          flutter build ios --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          cd Payload
+          ln -s ../Runner.app
+          cd ..
+          zip -r app.ipa Payload
+
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/apk/debug/*"
+          artifacts: "build/app/outputs/apk/debug/*,build/ios/iphoneos/iosApp.ipa"
           tag: v1.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
         
