@@ -38,7 +38,7 @@ jobs:
       - name: Build APPBUNDLE
         run: flutter build appbundle --release
 
-    job2:
+  job2:
       build:
         runs-on: macos-latest
 
